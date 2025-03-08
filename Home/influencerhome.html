@@ -8,10 +8,13 @@
 </head>
 <body>
   <h1>Brandfluence</h1>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search by platform or theme..." onkeyup="searchCampaigns()">
+  </div>
   <div class="campaigns-container">
 
     <!-- Campaign Box Example -->
-    <div class="campaign-box">
+    <div class="campaign-box" data-platform="Instagram TikTok" data-theme="Fashion">
       <img src="photo_2023-09-07_20-15-42.jpg" alt="Campaign Photo" class="campaign-photo">
       <div class="campaign-info">
         <h3>Summer Fashion Promo</h3>
@@ -22,7 +25,37 @@
       <button class="apply-btn">Apply</button>
     </div>
 
-    <div class="campaign-box">
+    <div class="campaign-box"  data-platform="YouTube" data-theme="Health">
+      <img src="photo_2023-09-07_20-15-42.jpg" alt="Campaign Photo" class="campaign-photo">
+      <div class="campaign-info">
+        <h3>Healthy Snacks Campaign</h3>
+        <p><strong>Platform:</strong> YouTube</p>
+        <p><strong>Target Audience:</strong> Health-conscious individuals, Ages 25-40</p>
+        <p><strong>Requirements:</strong> Review our snacks in a lifestyle vlog.</p>
+      </div>
+      <button class="apply-btn">Apply</button>
+    </div>
+    <div class="campaign-box" data-platform="YouTube" data-theme="Health">
+      <img src="photo_2023-09-07_20-15-42.jpg" alt="Campaign Photo" class="campaign-photo">
+      <div class="campaign-info">
+        <h3>Healthy Snacks Campaign</h3>
+        <p><strong>Platform:</strong> YouTube</p>
+        <p><strong>Target Audience:</strong> Health-conscious individuals, Ages 25-40</p>
+        <p><strong>Requirements:</strong> Review our snacks in a lifestyle vlog.</p>
+      </div>
+      <button class="apply-btn">Apply</button>
+    </div>
+    <div class="campaign-box"  data-platform="YouTube" data-theme="Health">
+      <img src="photo_2023-09-07_20-15-42.jpg" alt="Campaign Photo" class="campaign-photo">
+      <div class="campaign-info">
+        <h3>Healthy Snacks Campaign</h3>
+        <p><strong>Platform:</strong> YouTube</p>
+        <p><strong>Target Audience:</strong> Health-conscious individuals, Ages 25-40</p>
+        <p><strong>Requirements:</strong> Review our snacks in a lifestyle vlog.</p>
+      </div>
+      <button class="apply-btn">Apply</button>
+    </div>
+    <div class="campaign-box" data-platform="YouTube" data-theme="Health">
       <img src="photo_2023-09-07_20-15-42.jpg" alt="Campaign Photo" class="campaign-photo">
       <div class="campaign-info">
         <h3>Healthy Snacks Campaign</h3>
@@ -33,7 +66,21 @@
       <button class="apply-btn">Apply</button>
     </div>
 
-    <!-- Add more campaign boxes as needed -->
+    <script>
+        function searchCampaigns() {
+          const input = document.getElementById('searchInput').value.toLowerCase();
+          const campaigns = document.querySelectorAll('.campaign-box');
+          campaigns.forEach(campaign => {
+            const platform = campaign.getAttribute('data-platform').toLowerCase();
+            const theme = campaign.getAttribute('data-theme').toLowerCase();
+            if (platform.includes(input) || theme.includes(input)) {
+              campaign.style.display = 'block';
+            } else {
+              campaign.style.display = 'none';
+            }
+          });
+        }
+      </script>
 
   </div>
 </body>
