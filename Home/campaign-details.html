@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Campaign Details</title>
+</head>
+<body>
+    <div class="container">
+        <h1 id="campaignTitle"></h1>
+        <p><strong>Type:</strong> <span id="campaignType"></span></p>
+        <p><strong>Duration:</strong> <span id="campaignDuration"></span></p>
+        <p><strong>Content Requirements:</strong> <span id="campaignContent"></span></p>
+        <p><strong>Salary Range:</strong> <span id="campaignSalary"></span></p>
+        <button id="applyFinal" class="apply-btn">Apply Now</button>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            document.getElementById("campaignTitle").innerText = params.get("title");
+            document.getElementById("campaignType").innerText = params.get("type");
+            document.getElementById("campaignDuration").innerText = params.get("duration");
+            document.getElementById("campaignContent").innerText = params.get("content");
+            document.getElementById("campaignSalary").innerText = params.get("salary");
+        });
+    </script>
+</body>
+</html>

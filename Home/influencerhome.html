@@ -8,6 +8,9 @@
 </head>
 <body>
   <h1>Brandfluence</h1>
+  <div class="profile-container">
+    <img src="profile-icon.png" alt="" class="profile-icon" onclick="window.location.href='profile.html'">
+  </div>
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Search by platform or theme..." onkeyup="searchCampaigns()">
   </div>
@@ -22,7 +25,7 @@
         <p><strong>Target Audience:</strong> Ages 18-30, Fashion Enthusiasts</p>
         <p><strong>Requirements:</strong> Showcase our summer collection in a creative reel.</p>
       </div>
-      <button class="apply-btn">Apply</button>
+      <button class="apply-btn" onclick="showCampaignDetails(this)">Apply</button>
     </div>
 
     <div class="campaign-box"  data-platform="YouTube" data-theme="Health">
@@ -33,7 +36,7 @@
         <p><strong>Target Audience:</strong> Health-conscious individuals, Ages 25-40</p>
         <p><strong>Requirements:</strong> Review our snacks in a lifestyle vlog.</p>
       </div>
-      <button class="apply-btn">Apply</button>
+      <button class="apply-btn" onclick="showCampaignDetails(this)">Apply</button>
     </div>
     <div class="campaign-box" data-platform="YouTube" data-theme="Health">
       <img src="photo_2023-09-07_20-15-42.jpg" alt="Campaign Photo" class="campaign-photo">
@@ -43,7 +46,7 @@
         <p><strong>Target Audience:</strong> Health-conscious individuals, Ages 25-40</p>
         <p><strong>Requirements:</strong> Review our snacks in a lifestyle vlog.</p>
       </div>
-      <button class="apply-btn">Apply</button>
+      <button class="apply-btn" onclick="showCampaignDetails(this)">Apply</button>
     </div>
     <div class="campaign-box"  data-platform="YouTube" data-theme="Health">
       <img src="photo_2023-09-07_20-15-42.jpg" alt="Campaign Photo" class="campaign-photo">
@@ -53,7 +56,7 @@
         <p><strong>Target Audience:</strong> Health-conscious individuals, Ages 25-40</p>
         <p><strong>Requirements:</strong> Review our snacks in a lifestyle vlog.</p>
       </div>
-      <button class="apply-btn">Apply</button>
+      <button class="apply-btn" onclick="showCampaignDetails(this)">Apply</button>
     </div>
     <div class="campaign-box" data-platform="YouTube" data-theme="Health">
       <img src="photo_2023-09-07_20-15-42.jpg" alt="Campaign Photo" class="campaign-photo">
@@ -63,24 +66,21 @@
         <p><strong>Target Audience:</strong> Health-conscious individuals, Ages 25-40</p>
         <p><strong>Requirements:</strong> Review our snacks in a lifestyle vlog.</p>
       </div>
-      <button class="apply-btn">Apply</button>
+      <button class="apply-btn" onclick="showCampaignDetails(this)">Apply</button>
     </div>
 
-    <script>
-        function searchCampaigns() {
-          const input = document.getElementById('searchInput').value.toLowerCase();
-          const campaigns = document.querySelectorAll('.campaign-box');
-          campaigns.forEach(campaign => {
-            const platform = campaign.getAttribute('data-platform').toLowerCase();
-            const theme = campaign.getAttribute('data-theme').toLowerCase();
-            if (platform.includes(input) || theme.includes(input)) {
-              campaign.style.display = 'block';
-            } else {
-              campaign.style.display = 'none';
-            }
-          });
-        }
-      </script>
+    <div id="campaignModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <p><strong>Type:</strong> <span id="modalType"></span></p>
+        <p><strong>Duration:</strong> <span id="modalDuration"></span></p>
+        <p><strong>Content Requirements:</strong> <span id="modalContent"></span></p>
+        <p><strong>Salary Range:</strong> <span id="modalSalary"></span></p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
 
   </div>
 </body>
