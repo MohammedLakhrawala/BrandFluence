@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Edit Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1d1b1b;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .edit-container {
+      width: 90%;
+      max-width: 600px;
+      background: #2b2a2a;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(27, 114, 165, 0.5);
+    }
+    .edit-container h2 {
+      text-align: center;
+      color: #55c4f7;
+    }
+    .edit-form label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    .edit-form input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    .save-btn {
+      width: 100%;
+      padding: 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+    .save-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="edit-container">
+    <h2>Edit Profile</h2>
+    <form class="edit-form" id="editProfileForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="designation">Designation</label>
+      <input type="text" id="designation" name="designation" required>
+      
+      <label for="bio">Bio</label>
+      <input type="text" id="bio" name="bio" required>
+
+      <label for="platforms">Platform</label>
+      <input type="text" id="platforms" name="platforms" required>
+      
+      
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+      
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" required>
+      
+      <button id="saveChanges" type="submit" class="save-btn">Save Changes</button>
+    </form>
+  </div>
+  <script>
+
+    document.getElementById("saveChanges").addEventListener("click", async (event) => {
+  event.preventDefault(); // Prevent default form submission
+
+  const name = document.getElementById("name").value;
+  const designation = document.getElementById("designation").value;
+  const bio = document.getElementById("bio").value;
+  const platforms = document.getElementById("platforms").value;
+  const email = document.getElementById("email").value;
+  const location = document.getElementById("location").value;
+  
+  const profileData = { name, designation, bio, platforms, email, location };
+
+  console.log("Sending profile data:", profileData); // Debugging log
+
+  try {
+    const response = await fetch("http://localhost:3000/profile/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(profileData)
+    });
+
+    const result = await response.json();
+    console.log("Server response:", result);
+
+    if (response.ok) {
+      window.location.href = "profile.html"; // Redirect on success
+    } else {
+      alert("Error updating profile: " + result.error);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to update profile.");
+  }
+});
+
+
+  </script>
+</body>
+</html>

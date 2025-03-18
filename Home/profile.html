@@ -1,32 +1,44 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link rel="stylesheet" href="style.css"> -->
+  <link rel="stylesheet" href="style.css">
   <title>Influencer Profile</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
+      margin-left: 10px;
+      padding-left: 5px;
       background-color: #1d1b1b;
       color: white;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     .profile-container {
-      max-width: 600px;
-      margin: auto;
+      width: 100%;
+      max-width: 1250px;
+      background: #2b2a2a;
+      padding: 30px;
+      margin-left: 10px;
+
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(27, 114, 165, 0.5);
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 20px;
+    }
+    .profile-sidebar {
+      text-align: center;
       background: #333;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-    }
-    .profile-box {
-      padding: 20px;
+      border-radius: 15px;
     }
     .profile-pic {
-      width: 120px;
-      height: 120px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid #55c4f7;
@@ -35,20 +47,27 @@
     h1, h2 {
       color: #55c4f7;
     }
-    p {
-      font-size: 16px;
-      margin: 5px 0;
+    .profile-content {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .profile-box {
+      background: #444;
+      padding: 20px;
+      border-radius: 10px;
     }
     .edit-btn {
-      display: inline-block;
-      padding: 10px 15px;
+      display: block;
+      width: 100%;
+      padding: 15px;
       background-color: #4CAF50;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       font-size: 16px;
-      margin-top: 10px;
+      margin-top: 15px;
     }
     .edit-btn:hover {
       background-color: #45a049;
@@ -57,14 +76,28 @@
 </head>
 <body>
   <div class="profile-container">
-    <h1>Influencer Profile</h1>
-    <div class="profile-box">
-      <img src="profile-picture.jpg" alt="Profile Picture" class="profile-pic">
+    <div class="profile-sidebar">
+      <img src="photo_2023-09-07_20-15-42.jpg" alt="Profile Picture" class="profile-pic">
       <h2 id="profile-name">John Doe</h2>
-      <p id="profile-bio">Fashion & Lifestyle Influencer | 50K Followers</p>
-      <p><strong>Platforms:</strong> Instagram, TikTok, YouTube</p>
-      <p><strong>Email:</strong> johndoe@example.com</p>
-      <p><strong>Location:</strong> New York, USA</p>
+      <p id="Designation">Fashion & Lifestyle Influencer | 50K Followers</p>
+    </div>
+    <div class="profile-content">
+      <div class="profile-box">
+        <h3>Bio</h3>
+        <p id="profile-bio">Passionate influencer creating lifestyle and fashion content. Collaborated with top brands and growing engagement daily.</p>
+      </div>
+      <div class="profile-box">
+        <h3>Platforms</h3>
+        <p id="profile-platforms">Instagram, TikTok, YouTube</p>
+      </div>
+      <div class="profile-box">
+        <h3>Email</h3>
+        <p id="profile-email">johndoe@example.com</p>
+      </div>
+      <div class="profile-box">
+        <h3>Location</h3>
+        <p id="profile-location">New York, USA</p>
+      </div>
       <button class="edit-btn" onclick="editProfile()">Edit Profile</button>
     </div>
   </div>
@@ -74,6 +107,27 @@
       alert('Redirecting to edit profile page...');
       window.location.href = 'edit-profile.html';
     }
+    document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const response = await fetch("http://localhost:3000/profile");
+    const profile = await response.json();
+
+    if (profile) {
+      document.getElementById("profile-name").innerText = profile.name;
+      document.getElementById("Designation").innerText = profile.designation;
+      document.getElementById("profile-bio").innerText = profile.bio;
+      document.getElementById("profile-platforms").innerText = profile.platforms;
+      document.getElementById("profile-email").innerText = profile.email;
+      document.getElementById("profile-location").innerText = profile.location;
+      
+    } else {
+      console.error("Profile not found");
+    }
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+  }
+});
+
   </script>
 </body>
 </html>
