@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brandfluence - Company Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        .create-btn {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .campaign-card, .influencer-card {
+            background: #1e1e1e;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .applicant-card {
+            background: #222;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .select-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .select-btn:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Brandfluence - Company Home</h1>
+    
+    <!-- Create Campaign Button -->
+    <button class="create-btn" onclick="showCampaignForm()">+ Create New Campaign</button>
+
+    <!-- Campaign Creation Form -->
+    <div id="campaignForm" style="display: none;">
+        <h3>Create a Campaign</h3>
+        <input type="text" id="campaignName" placeholder="Campaign Name" required>
+        <textarea id="campaignDescription" placeholder="Campaign Description" required></textarea>
+        <input type="text" id="platform" placeholder="Platform (e.g., Instagram, YouTube)" required>
+        <input type="text" id="gender" placeholder="Target Gender (e.g., Male, Female, Any)" required>
+        <input type="date" id="lastApplyDate" required>
+        <button onclick="createCampaign()">Submit</button>
+    </div>
+
+    <div class="container">
+        <h2>My Campaigns</h2>
+        <div class="campaign-list"></div>
+
+        <div id="applicantSection" style="display: none;">
+            <h2>Applicants</h2>
+            <div id="applicantList"></div>
+        </div>
+
+        <h2>Influencers</h2>
+        <div class="influencer-list"></div>
+    </div>
+
+    <script>
+        const agencyId = "YOUR_AGENCY_ID"; // Replace dynamically
+
+        function showCampaignForm() {
+            document.getElementById("campaignForm").style.display = "block";
+        }
+
+        async function createCampaign() {
+            const campaignName = document.getElementById("campaignName").value;
+            const campaignDescription = document.getElementById("campaignDescription").value;
+            const platform = document.getElementById("platform").value;
+            const gender = document.getElementById("gender").value;
+            const lastApplyDate = document.getElementById("lastApplyDate").value;
+            const createdBy = agencyId;
+
+            const response = await fetch("http://localhost:3019/api/create-campaign", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ campaignName, campaignDescription, platform, gender, lastApplyDate, createdBy })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert("Campaign Created Successfully!");
+                window.location.reload();
+            } else {
+                alert("Error creating campaign.");
+            }
+        }
+
+        async function loadMyCampaigns() {
+            const response = await fetch(`http://localhost:3019/api/my-campaigns/${agencyId}`);
+            const campaigns = await response.json();
+            const campaignList = document.querySelector(".campaign-list");
+            campaignList.innerHTML = "";
+
+            if (campaigns.length === 0) {
+                campaignList.innerHTML = "<p>No campaigns posted.</p>";
+                return;
+            }
+
+            campaigns.forEach(campaign => {
+                const campaignDiv = document.createElement("div");
+                campaignDiv.classList.add("campaign-card");
+                campaignDiv.innerHTML = `
+                    <h3>${campaign.campaignName}</h3>
+                    <p>${campaign.campaignDescription}</p>
+                    <button onclick="viewApplicants('${campaign._id}')">View Applicants</button>
+                `;
+                campaignList.appendChild(campaignDiv);
+            });
+        }
+
+        async function viewApplicants(campaignId) {
+            const response = await fetch(`http://localhost:3019/api/campaign/${campaignId}`);
+            const { campaign, applicantCount } = await response.json();
+            
+            document.getElementById("applicantSection").style.display = "block";
+            const applicantList = document.getElementById("applicantList");
+            applicantList.innerHTML = `<p>Total Applicants: ${applicantCount}</p>`;
+
+            const appRes = await fetch(`http://localhost:3019/api/campaign-applicants/${campaignId}`);
+            const applicants = await appRes.json();
+
+            applicants.forEach(app => {
+                const applicantDiv = document.createElement("div");
+                applicantDiv.classList.add("applicant-card");
+                applicantDiv.innerHTML = `
+                    <p><strong>${app.influencerName}</strong></p>
+                    <button class="select-btn" onclick="selectInfluencer('${app._id}')">Select</button>
+                `;
+                applicantList.appendChild(applicantDiv);
+            });
+        }
+
+        async function selectInfluencer(applicationId) {
+            const response = await fetch("http://localhost:3019/api/select-applicant", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ applicationId })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert("Influencer selected successfully!");
+                loadMyCampaigns();
+            } else {
+                alert("Error selecting influencer.");
+            }
+        }
+
+        async function loadInfluencers() {
+            try {
+                const response = await fetch("http://localhost:3019/api/influencers");
+                const influencers = await response.json();
+                const influencerList = document.querySelector(".influencer-list");
+                influencerList.innerHTML = "";
+
+                if (influencers.length === 0) {
+                    influencerList.innerHTML = "<p>No influencers available.</p>";
+                    return;
+                }
+
+                influencers.forEach(influencer => {
+                    const card = document.createElement("div");
+                    card.classList.add("influencer-card");
+                    card.innerHTML = `
+                        <h3>${influencer.fullName}</h3>
+                        <p>Platform: ${influencer.socialMedia}</p>
+                        <p>Followers: ${influencer.followers}</p>
+                        <p>Gender: ${influencer.gender}</p>
+                    `;
+                    influencerList.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error loading influencers:", error);
+                document.querySelector(".influencer-list").innerHTML = "<p>Error loading influencers.</p>";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadMyCampaigns();
+            loadInfluencers();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brandfluence - Influencer Home</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #1d1b1b;
+      color: white;
+    }
+    h1 {
+      text-align: center;
+      color: rgba(27, 114, 165, 1);
+    }
+    .campaigns-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .campaign-box {
+      background-color: #333;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(27, 114, 165, 1);
+    }
+    .campaign-info {
+      margin-top: 10px;
+    }
+    .apply-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 16px;
+    }
+    .apply-btn:disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Brandfluence - Available Campaigns</h1>
+  <div class="campaigns-container"></div>
+
+  <script>
+    async function loadCampaigns() {
+      try {
+        const response = await fetch("http://localhost:3019/api/campaigns");
+        const campaigns = await response.json();
+
+        const container = document.querySelector(".campaigns-container");
+        container.innerHTML = ""; // Clear old content
+
+        if (campaigns.length === 0) {
+          container.innerHTML = "<p>No campaigns available.</p>";
+          return;
+        }
+
+        campaigns.forEach(campaign => {
+          const today = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD
+          const isExpired = campaign.lastApplyDate < today;
+
+          const campaignDiv = document.createElement("div");
+          campaignDiv.classList.add("campaign-box");
+
+          campaignDiv.innerHTML = `
+            <h3>${campaign.campaignName}</h3>
+            <p>${campaign.campaignDescription}</p>
+            <p><strong>Platform:</strong> ${campaign.platform}</p>
+            <p><strong>Target Gender:</strong> ${campaign.gender}</p>
+            <p><strong>Last Apply Date:</strong> ${campaign.lastApplyDate}</p>
+            <button class="apply-btn" ${isExpired ? "disabled" : ""} onclick="applyForCampaign('${campaign._id}')">
+              ${isExpired ? "Application Closed" : "Apply Now"}
+            </button>
+          `;
+
+          container.appendChild(campaignDiv);
+        });
+      } catch (error) {
+        console.error("Error loading campaigns:", error);
+        document.querySelector(".campaigns-container").innerHTML = "<p>Error loading campaigns.</p>";
+      }
+    }
+
+    async function applyForCampaign(campaignId) {
+      const influencerId = "influencer123"; // Replace with actual influencer ID from session/localStorage
+
+      const response = await fetch("http://localhost:3019/api/apply-campaign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ influencerId, campaignId })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert("Successfully applied for the campaign!");
+      } else {
+        alert("Error applying for the campaign.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadCampaigns);
+  </script>
+</body>
+</html>

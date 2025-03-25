@@ -1,0 +1,118 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandFluence</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #E0E0E0;
+            position: relative;
+            overflow: hidden;
+        }
+        .background-text {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: rgba(173, 216, 230, 0.7);
+            text-align: center;
+            width: 80%;
+            font-weight: bold;
+        }
+        .container {
+            text-align: center;
+            background: #1E1E1E;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 191, 255, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #00BFFF;
+        }
+        .btn {
+            display: block;
+            width: 200px;
+            padding: 12px;
+            margin: 10px auto;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #007ACC, #00BFFF);
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(0, 191, 255, 0.7);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1E1E1E;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 191, 255, 0.5);
+            text-align: center;
+            color: white;
+            z-index: 1000;
+        }
+        .close {
+            cursor: pointer;
+            color: #00BFFF;
+            font-size: 18px;
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-text">BrandFluence - Connecting Creator to Collabrator</div>
+    <div class="container">
+        <h1>Welcome to BrandFluence</h1>
+        <button class="btn" onclick="showAbout()">About</button>
+        <button class="btn" onclick="showSignupOptions()">Sign Up</button>
+        <button class="btn" onclick="location.href='login.html'">Login</button>
+    </div>
+    
+    <div id="aboutModal" class="modal">
+        <p>BrandFluence is an easy-to-operate platform to connect with influencers and branding agencies. Here you can apply for an advertisement campaign and release a campaign according to the needs and work required from an influencer.</p>
+        <span class="close" onclick="closeAbout()">Close</span>
+    </div>
+    
+    <div id="signupModal" class="modal">
+        <p>Sign Up as:</p>
+        <button class="btn" onclick="location.href='signup_influencer.html'">Influencer</button>
+        <button class="btn" onclick="location.href='signup_agency.html'">Branding Agency</button>
+        <span class="close" onclick="closeSignupOptions()">Close</span>
+    </div>
+    
+    <script>
+        function showAbout() {
+            document.getElementById('aboutModal').style.display = 'block';
+        }
+        function closeAbout() {
+            document.getElementById('aboutModal').style.display = 'none';
+        }
+        function showSignupOptions() {
+            document.getElementById('signupModal').style.display = 'block';
+        }
+        function closeSignupOptions() {
+            document.getElementById('signupModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
