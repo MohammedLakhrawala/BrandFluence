@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Campaign - BrandFluence</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #222;
+            border-bottom: 2px solid #007bff;
+        }
+        .brand-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00aaff;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .nav-item:hover {
+            color: #00aaff;
+        }
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Form Styles */
+        .form-container {
+            width: 90%;
+            max-width: 600px;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 2px #007bff;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #333;
+            color: white;
+        }
+        .form-group select {
+            height: 100px; /* Bigger height for multi-select */
+        }
+        .form-group textarea {
+            height: 80px;
+            resize: none;
+        }
+        .form-group input[type="file"] {
+            background: none;
+            padding: 5px;
+        }
+        .submit-btn {
+            width: 100%;
+            background: green;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .submit-btn:hover {
+            background: darkgreen;
+        }
+        /* Notification Dropdown */
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    background: #222;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 191, 255, 0.2);
+    padding: 10px;
+    width: 250px;
+    text-align: left;
+    z-index: 1000; /* Ensures it's on top */
+}
+
+.dropdown p {
+    margin: 0;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+    color: white;
+}
+
+.dropdown p:last-child {
+    border-bottom: none;
+}
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header">
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-item">Home</a>
+        </div>
+        <div class="brand-title">BRANDFLUENCE</div>
+        <div class="nav-links">
+            <div class="nav-item" id="notification">
+                <img src="../assets/notification-icon.png" alt="🔔" class="icon">
+                <div class="dropdown" id="notification-dropdown">
+                    <p>No new notifications</p>
+                </div>
+            </div>
+            <div class="nav-item">
+                <img src="../assets/chat-icon.png" alt="💬" class="icon">
+
+            </div>
+            <div class="nav-item">
+                <img src="../assets/profile-icon.png" alt="👤" class="icon">
+
+            </div>
+            <a href="../common/index.html" class="nav-item">Logout</a>
+        </div>
+    </div>
+
+    <!-- New Campaign Form -->
+    <div class="form-container">
+        <h2>Create New Campaign</h2>
+        <form id="campaignForm">
+            <div class="form-group">
+                <label for="campaign-name">Campaign Name</label>
+                <input type="text" id="campaign-name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="platform">Select Platform(s)</label>
+                <select id="platform" multiple>
+                    <option value="Instagram">Instagram</option>
+                    <option value="YouTube">YouTube</option>
+                    <option value="TikTok">TikTok</option>
+                    <option value="Facebook">Facebook</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="target-audience">Target Audience</label>
+                <input type="text" id="target-audience" required>
+            </div>
+
+            <div class="form-group">
+                <label for="requirements">Campaign Requirements</label>
+                <textarea id="requirements" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="campaign-image">Upload Campaign Image</label>
+                <input type="file" id="campaign-image" accept="image/*">
+            </div>
+
+            <button type="submit" class="submit-btn" onclick="window.location.href='dashboard.html'">Submit Campaign</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('campaignForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get form values
+            let name = document.getElementById('campaign-name').value;
+            let platforms = Array.from(document.getElementById('platform').selectedOptions).map(option => option.value);
+            let audience = document.getElementById('target-audience').value;
+            let requirements = document.getElementById('requirements').value;
+            let image = document.getElementById('campaign-image').files[0];
+
+            // Display data (In future, send it to backend)
+            console.log("Campaign Name:", name);
+            console.log("Platforms:", platforms);
+            console.log("Target Audience:", audience);
+            console.log("Requirements:", requirements);
+            console.log("Image:", image ? image.name : "No image uploaded");
+
+            alert("Campaign submitted successfully!");
+        });
+    </script>
+
+<script src="newcampaign.js"></script>
+
+</body>
+</html>
